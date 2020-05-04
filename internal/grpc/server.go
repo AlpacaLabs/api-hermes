@@ -6,6 +6,7 @@ import (
 
 	"github.com/AlpacaLabs/hermes/internal/config"
 	"github.com/AlpacaLabs/hermes/internal/services"
+	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -36,7 +37,8 @@ func (s Server) Run() {
 	log.Println("Starting gRPC server...")
 	grpcServer := grpc.NewServer()
 
-	// TODO Register our services
+	hermesV1.RegisterSendEmailServiceServer(grpcServer, s)
+	hermesV1.RegisterSendSmsServiceServer(grpcServer, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcServer)

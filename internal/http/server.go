@@ -25,6 +25,9 @@ func NewServer(config config.Config, service services.Service) Server {
 func (s Server) Run() {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/send-email", s.SendEmail).Methods(http.MethodPost)
+	r.HandleFunc("/send-sms", s.SendSms).Methods(http.MethodPost)
+
 	addr := fmt.Sprintf(":%d", s.config.HTTPPort)
 	log.Infof("Listening for HTTP on %s...\n", addr)
 	log.Fatal(http.ListenAndServe(addr, r))
