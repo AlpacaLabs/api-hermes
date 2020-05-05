@@ -1,14 +1,14 @@
 package services
 
 import (
-	"github.com/AlpacaLabs/hermes/internal/config"
+	"github.com/AlpacaLabs/hermes/internal/configuration"
 )
 
 type Service struct {
-	config config.Config
+	config configuration.Config
 }
 
-func NewService(config config.Config) Service {
+func NewService(config configuration.Config) Service {
 	return Service{
 		config: config,
 	}

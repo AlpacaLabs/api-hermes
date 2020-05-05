@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/AlpacaLabs/hermes/internal/config"
+	"github.com/AlpacaLabs/hermes/internal/configuration"
 	"github.com/AlpacaLabs/hermes/internal/services"
 	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
 	log "github.com/sirupsen/logrus"
@@ -13,11 +13,11 @@ import (
 )
 
 type Server struct {
-	config  config.Config
+	config  configuration.Config
 	service services.Service
 }
 
-func NewServer(config config.Config, service services.Service) Server {
+func NewServer(config configuration.Config, service services.Service) Server {
 	return Server{
 		config:  config,
 		service: service,

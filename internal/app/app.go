@@ -5,16 +5,16 @@ import (
 
 	"github.com/AlpacaLabs/hermes/internal/grpc"
 
-	"github.com/AlpacaLabs/hermes/internal/config"
+	"github.com/AlpacaLabs/hermes/internal/configuration"
 	"github.com/AlpacaLabs/hermes/internal/http"
 	"github.com/AlpacaLabs/hermes/internal/services"
 )
 
 type App struct {
-	config config.Config
+	config configuration.Config
 }
 
-func NewApp(c config.Config) App {
+func NewApp(c configuration.Config) App {
 	return App{
 		config: c,
 	}
