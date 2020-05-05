@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"github.com/AlpacaLabs/hermes/internal/configuration"
-	"github.com/AlpacaLabs/hermes/internal/services"
+	"github.com/AlpacaLabs/hermes/internal/service"
 	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -14,10 +14,10 @@ import (
 
 type Server struct {
 	config  configuration.Config
-	service services.Service
+	service service.Service
 }
 
-func NewServer(config configuration.Config, service services.Service) Server {
+func NewServer(config configuration.Config, service service.Service) Server {
 	return Server{
 		config:  config,
 		service: service,

@@ -7,7 +7,7 @@ import (
 
 	"github.com/AlpacaLabs/hermes/internal/configuration"
 	"github.com/AlpacaLabs/hermes/internal/http"
-	"github.com/AlpacaLabs/hermes/internal/services"
+	"github.com/AlpacaLabs/hermes/internal/service"
 )
 
 type App struct {
@@ -21,7 +21,7 @@ func NewApp(c configuration.Config) App {
 }
 
 func (a App) Run() {
-	svc := services.NewService(a.config)
+	svc := service.NewService(a.config)
 
 	var wg sync.WaitGroup
 
