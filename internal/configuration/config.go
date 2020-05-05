@@ -3,9 +3,9 @@ package configuration
 import (
 	"encoding/json"
 
-	"github.com/google/uuid"
 	flag "github.com/spf13/pflag"
 
+	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -14,6 +14,9 @@ const (
 	flagForGrpcPort       = "grpc_port"
 	flagForGrpcPortHealth = "grpc_port_health"
 	flagForHTTPPort       = "http_port"
+
+	flagEmailEnabled = "email_enabled"
+	flagSMSEnabled   = "sms_enabled"
 
 	flagForTwilioAccountSID  = "twilio_account_sid"
 	flagForTwilioAuthToken   = "twilio_auth_token"
@@ -35,6 +38,9 @@ type Config struct {
 
 	// HealthPort controls what port our gRPC health endpoints run on.
 	HealthPort int
+
+	EmailEnabled bool
+	SMSEnabled   bool
 
 	TwilioAccountSID  string
 	TwilioAuthToken   string
@@ -62,6 +68,9 @@ func LoadConfig() Config {
 	flag.Int(flagForGrpcPortHealth, c.HealthPort, "gRPC health port")
 	flag.Int(flagForHTTPPort, c.HTTPPort, "gRPC HTTP port")
 
+	flag.Bool(flagEmailEnabled, c.EmailEnabled, "whether email sending is enabled")
+	flag.Bool(flagSMSEnabled, c.SMSEnabled, "whether sms sending is enabled")
+
 	flag.String(flagForTwilioAccountSID, c.TwilioAccountSID, "Twilio Account SID")
 	flag.String(flagForTwilioAuthToken, c.TwilioAuthToken, "Twilio Auth Token")
 	flag.String(flagForTwilioPhoneNumber, c.TwilioPhoneNumber, "Twilio Phone Number")
@@ -72,6 +81,9 @@ func LoadConfig() Config {
 	viper.BindPFlag(flagForGrpcPortHealth, flag.Lookup(flagForGrpcPortHealth))
 	viper.BindPFlag(flagForHTTPPort, flag.Lookup(flagForHTTPPort))
 
+	viper.BindPFlag(flagEmailEnabled, flag.Lookup(flagEmailEnabled))
+	viper.BindPFlag(flagSMSEnabled, flag.Lookup(flagSMSEnabled))
+
 	viper.BindPFlag(flagForTwilioAccountSID, flag.Lookup(flagForTwilioAccountSID))
 	viper.BindPFlag(flagForTwilioAuthToken, flag.Lookup(flagForTwilioAuthToken))
 	viper.BindPFlag(flagForTwilioPhoneNumber, flag.Lookup(flagForTwilioPhoneNumber))
@@ -81,6 +93,9 @@ func LoadConfig() Config {
 	c.GrpcPort = viper.GetInt(flagForGrpcPort)
 	c.HealthPort = viper.GetInt(flagForGrpcPortHealth)
 	c.HTTPPort = viper.GetInt(flagForHTTPPort)
+
+	c.EmailEnabled = viper.GetBool(flagEmailEnabled)
+	c.SMSEnabled = viper.GetBool(flagSMSEnabled)
 
 	c.TwilioAccountSID = viper.GetString(flagForTwilioAccountSID)
 	c.TwilioAuthToken = viper.GetString(flagForTwilioAuthToken)
