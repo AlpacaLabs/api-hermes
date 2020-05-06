@@ -3,8 +3,8 @@ package main
 import (
 	"sync"
 
-	"github.com/AlpacaLabs/hermes/internal/app"
-	"github.com/AlpacaLabs/hermes/internal/configuration"
+	"github.com/AlpacaLabs/api-hermes/internal/app"
+	"github.com/AlpacaLabs/api-hermes/internal/configuration"
 )
 
 func main() {

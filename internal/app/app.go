@@ -3,11 +3,11 @@ package app
 import (
 	"sync"
 
-	"github.com/AlpacaLabs/hermes/internal/grpc"
+	"github.com/AlpacaLabs/api-hermes/internal/grpc"
 
-	"github.com/AlpacaLabs/hermes/internal/configuration"
-	"github.com/AlpacaLabs/hermes/internal/http"
-	"github.com/AlpacaLabs/hermes/internal/service"
+	"github.com/AlpacaLabs/api-hermes/internal/configuration"
+	"github.com/AlpacaLabs/api-hermes/internal/http"
+	"github.com/AlpacaLabs/api-hermes/internal/service"
 )
 
 type App struct {

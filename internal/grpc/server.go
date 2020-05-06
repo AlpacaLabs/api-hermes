@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/AlpacaLabs/hermes/internal/configuration"
-	"github.com/AlpacaLabs/hermes/internal/service"
+	"github.com/AlpacaLabs/api-hermes/internal/configuration"
+	"github.com/AlpacaLabs/api-hermes/internal/service"
 	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"

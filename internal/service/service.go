@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/AlpacaLabs/hermes/internal/configuration"
+	"github.com/AlpacaLabs/api-hermes/internal/configuration"
 )
 
 type Service struct {

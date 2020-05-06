@@ -1,4 +1,4 @@
-module github.com/AlpacaLabs/hermes
+module github.com/AlpacaLabs/api-hermes
 
 go 1.14
 
