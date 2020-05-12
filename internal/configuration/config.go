@@ -3,6 +3,8 @@ package configuration
 import (
 	"encoding/json"
 
+	configuration "github.com/AlpacaLabs/go-config"
+
 	flag "github.com/spf13/pflag"
 
 	"github.com/google/uuid"
@@ -45,6 +47,9 @@ type Config struct {
 	TwilioAccountSID  string
 	TwilioAuthToken   string
 	TwilioPhoneNumber string
+
+	KafkaConfig configuration.KafkaConfig
+	SQLConfig   configuration.SQLConfig
 }
 
 func (c Config) String() string {
@@ -57,12 +62,15 @@ func (c Config) String() string {
 
 func LoadConfig() Config {
 	c := Config{
-		AppName:    "citadel",
+		AppName:    "hermes",
 		AppID:      uuid.New().String(),
 		GrpcPort:   8081,
 		HealthPort: 8082,
 		HTTPPort:   8083,
 	}
+
+	c.KafkaConfig = configuration.LoadKafkaConfig()
+	c.SQLConfig = configuration.LoadSQLConfig()
 
 	flag.Int(flagForGrpcPort, c.GrpcPort, "gRPC port")
 	flag.Int(flagForGrpcPortHealth, c.HealthPort, "gRPC health port")

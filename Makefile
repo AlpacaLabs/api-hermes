@@ -11,7 +11,8 @@ GO_BIN := ${GOPATH}/bin
 GOPRIVATE := github.com/AlpacaLabs
 
 # App env vars
-DB_HOST ?= alpaca
+KAFKA_HOST ?= kafka
+DB_HOST ?= hermes-db
 DB_NAME ?= alpaca
 DB_USER ?= alpaca
 DB_PASS ?= alpaca
@@ -20,6 +21,7 @@ DB_PASS ?= alpaca
 all:
 	env \
 	  GO111MODULE=${GO111MODULE} \
+	  KAFKA_HOST=${KAFKA_HOST} \
 	  DB_HOST=${DB_HOST} \
 	  DB_NAME=${DB_NAME} \
 	  DB_USER=${DB_USER} \

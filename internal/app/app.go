@@ -3,6 +3,8 @@ package app
 import (
 	"sync"
 
+	"github.com/AlpacaLabs/api-hermes/internal/async"
+
 	"github.com/AlpacaLabs/api-hermes/internal/grpc"
 
 	"github.com/AlpacaLabs/api-hermes/internal/configuration"
@@ -32,6 +34,12 @@ func (a App) Run() {
 	wg.Add(1)
 	grpcServer := grpc.NewServer(a.config, svc)
 	grpcServer.Run()
+
+	wg.Add(1)
+	async.HandleSendEmailRequests(a.config)
+
+	wg.Add(1)
+	async.HandleSendSmsRequests(a.config)
 
 	wg.Wait()
 }
