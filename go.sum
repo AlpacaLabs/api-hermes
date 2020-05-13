@@ -1,8 +1,8 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/AlpacaLabs/go-config v0.0.0-20200512232134-8004548d67af h1:R/P6D+m0NtLGU+fv2UYOsyTcnG8Lwhi17OmrWkqSSJ4=
 github.com/AlpacaLabs/go-config v0.0.0-20200512232134-8004548d67af/go.mod h1:15jyICkGZPpgglKHnUDkcdk19y7C2fhTTqLGRKw9RaY=
-github.com/AlpacaLabs/go-kafka v0.0.0-20200512235327-e25621e70b02 h1:hhWMy+V9NrDuz1fiHg2xCkYlbj1yj/4PWmEvvHEeIrM=
-github.com/AlpacaLabs/go-kafka v0.0.0-20200512235327-e25621e70b02/go.mod h1:xBHNIXEuswB+SFb94mOSCr7qjoDR6hN6NykIk/TR3Nc=
+github.com/AlpacaLabs/go-kafka v0.0.0-20200513011912-5ecc9cc5b6ba h1:ePPvk/PPQbb1i6RtpflrpxHa/cyp1kAeTZLXPHcVsc4=
+github.com/AlpacaLabs/go-kafka v0.0.0-20200513011912-5ecc9cc5b6ba/go.mod h1:xBHNIXEuswB+SFb94mOSCr7qjoDR6hN6NykIk/TR3Nc=
 github.com/AlpacaLabs/protorepo-hermes-go v0.0.0-20200504021841-28421f772c4d h1:2wiVQaAkbybfE0HO9aZF+GCVKEEjI5/TMIflLAxRVII=
 github.com/AlpacaLabs/protorepo-hermes-go v0.0.0-20200504021841-28421f772c4d/go.mod h1:7mRMd6etEb2iqWmqEn+YtW/l2qzLNyL5jZ7cqwM/zOg=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
