@@ -36,10 +36,10 @@ func (a App) Run() {
 	grpcServer.Run()
 
 	wg.Add(1)
-	async.HandleSendEmailRequests(a.config)
+	async.HandleSendEmailRequests(a.config, svc)
 
 	wg.Add(1)
-	async.HandleSendSmsRequests(a.config)
+	async.HandleSendSmsRequests(a.config, svc)
 
 	wg.Wait()
 }

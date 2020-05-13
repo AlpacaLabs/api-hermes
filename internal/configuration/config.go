@@ -49,7 +49,6 @@ type Config struct {
 	TwilioPhoneNumber string
 
 	KafkaConfig configuration.KafkaConfig
-	SQLConfig   configuration.SQLConfig
 }
 
 func (c Config) String() string {
@@ -70,7 +69,6 @@ func LoadConfig() Config {
 	}
 
 	c.KafkaConfig = configuration.LoadKafkaConfig()
-	c.SQLConfig = configuration.LoadSQLConfig()
 
 	flag.Int(flagForGrpcPort, c.GrpcPort, "gRPC port")
 	flag.Int(flagForGrpcPortHealth, c.HealthPort, "gRPC health port")

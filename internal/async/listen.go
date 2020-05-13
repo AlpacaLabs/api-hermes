@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/AlpacaLabs/api-hermes/internal/service"
+
 	"github.com/AlpacaLabs/api-hermes/internal/configuration"
-	"github.com/AlpacaLabs/api-hermes/internal/db"
 	goKafka "github.com/AlpacaLabs/go-kafka"
 	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
 	log "github.com/sirupsen/logrus"
 )
 
-func HandleSendEmailRequests(config configuration.Config) {
+func HandleSendEmailRequests(config configuration.Config, s service.Service) {
 	ctx := context.TODO()
 
 	groupID := config.AppName
@@ -20,24 +21,18 @@ func HandleSendEmailRequests(config configuration.Config) {
 		fmt.Sprintf("%s:%d", config.KafkaConfig.Host, config.KafkaConfig.Port),
 	}
 
-	dbConn, err := config.SQLConfig.Connect()
-	if err != nil {
-		log.Fatalf("failed to connect to SQL: %v", err)
-	}
-	dbClient := db.NewClient(dbConn)
-
-	err = goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
+	err := goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
 		Brokers:     brokers,
 		GroupID:     groupID,
 		Topic:       topic,
-		ProcessFunc: handleSendEmailRequest(dbClient),
+		ProcessFunc: handleSendEmailRequest(s),
 	})
 	if err != nil {
 		log.Errorf("%v", err)
 	}
 }
 
-func HandleSendSmsRequests(config configuration.Config) {
+func HandleSendSmsRequests(config configuration.Config, s service.Service) {
 	ctx := context.TODO()
 
 	groupID := config.AppName
@@ -46,24 +41,18 @@ func HandleSendSmsRequests(config configuration.Config) {
 		fmt.Sprintf("%s:%d", config.KafkaConfig.Host, config.KafkaConfig.Port),
 	}
 
-	dbConn, err := config.SQLConfig.Connect()
-	if err != nil {
-		log.Fatalf("failed to connect to SQL: %v", err)
-	}
-	dbClient := db.NewClient(dbConn)
-
-	err = goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
+	err := goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
 		Brokers:     brokers,
 		GroupID:     groupID,
 		Topic:       topic,
-		ProcessFunc: handleSendSmsRequest(dbClient),
+		ProcessFunc: handleSendSmsRequest(s),
 	})
 	if err != nil {
 		log.Errorf("%v", err)
 	}
 }
 
-func handleSendEmailRequest(dbClient db.Client) func(context.Context, goKafka.Message) {
+func handleSendEmailRequest(s service.Service) func(context.Context, goKafka.Message) {
 	return func(ctx context.Context, message goKafka.Message) {
 		// Convert kafka.Message to Protocol Buffer
 		pb := hermesV1.SendEmailRequest{}
@@ -71,16 +60,13 @@ func handleSendEmailRequest(dbClient db.Client) func(context.Context, goKafka.Me
 			log.Errorf("failed to unmarshal protobuf from kafka message: %v", err)
 		}
 
-		err := dbClient.RunInTransaction(ctx, func(ctx context.Context, tx db.Transaction) error {
-			return tx.SaveSendEmailRequest(ctx, pb)
-		})
-		if err != nil {
+		if _, err := s.SendEmail(ctx, pb); err != nil {
 			log.Errorf("failed to process kafka message in transaction: %v", err)
 		}
 	}
 }
 
-func handleSendSmsRequest(dbClient db.Client) func(context.Context, goKafka.Message) {
+func handleSendSmsRequest(s service.Service) func(context.Context, goKafka.Message) {
 	return func(ctx context.Context, message goKafka.Message) {
 		// Convert kafka.Message to Protocol Buffer
 		pb := hermesV1.SendSmsRequest{}
@@ -88,10 +74,7 @@ func handleSendSmsRequest(dbClient db.Client) func(context.Context, goKafka.Mess
 			log.Errorf("failed to unmarshal protobuf from kafka message: %v", err)
 		}
 
-		err := dbClient.RunInTransaction(ctx, func(ctx context.Context, tx db.Transaction) error {
-			return tx.SaveSendSmsRequest(ctx, pb)
-		})
-		if err != nil {
+		if _, err := s.SendSms(ctx, pb); err != nil {
 			log.Errorf("failed to process kafka message in transaction: %v", err)
 		}
 	}
