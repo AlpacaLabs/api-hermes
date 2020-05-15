@@ -3,19 +3,19 @@ package configuration
 import (
 	"encoding/json"
 
+	"github.com/rs/xid"
+
 	configuration "github.com/AlpacaLabs/go-config"
 
 	flag "github.com/spf13/pflag"
 
-	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 const (
-	flagForGrpcPort       = "grpc_port"
-	flagForGrpcPortHealth = "grpc_port_health"
-	flagForHTTPPort       = "http_port"
+	flagForGrpcPort = "grpc_port"
+	flagForHTTPPort = "http_port"
 
 	flagEmailEnabled = "email_enabled"
 	flagSMSEnabled   = "sms_enabled"
@@ -38,9 +38,6 @@ type Config struct {
 	// HTTPPort controls what port our HTTP server runs on.
 	HTTPPort int
 
-	// HealthPort controls what port our gRPC health endpoints run on.
-	HealthPort int
-
 	EmailEnabled bool
 	SMSEnabled   bool
 
@@ -61,17 +58,15 @@ func (c Config) String() string {
 
 func LoadConfig() Config {
 	c := Config{
-		AppName:    "hermes",
-		AppID:      uuid.New().String(),
-		GrpcPort:   8081,
-		HealthPort: 8082,
-		HTTPPort:   8083,
+		AppName:  "api-hermes",
+		AppID:    xid.New().String(),
+		GrpcPort: 8081,
+		HTTPPort: 8083,
 	}
 
 	c.KafkaConfig = configuration.LoadKafkaConfig()
 
 	flag.Int(flagForGrpcPort, c.GrpcPort, "gRPC port")
-	flag.Int(flagForGrpcPortHealth, c.HealthPort, "gRPC health port")
 	flag.Int(flagForHTTPPort, c.HTTPPort, "gRPC HTTP port")
 
 	flag.Bool(flagEmailEnabled, c.EmailEnabled, "whether email sending is enabled")
@@ -84,7 +79,6 @@ func LoadConfig() Config {
 	flag.Parse()
 
 	viper.BindPFlag(flagForGrpcPort, flag.Lookup(flagForGrpcPort))
-	viper.BindPFlag(flagForGrpcPortHealth, flag.Lookup(flagForGrpcPortHealth))
 	viper.BindPFlag(flagForHTTPPort, flag.Lookup(flagForHTTPPort))
 
 	viper.BindPFlag(flagEmailEnabled, flag.Lookup(flagEmailEnabled))
@@ -97,7 +91,6 @@ func LoadConfig() Config {
 	viper.AutomaticEnv()
 
 	c.GrpcPort = viper.GetInt(flagForGrpcPort)
-	c.HealthPort = viper.GetInt(flagForGrpcPortHealth)
 	c.HTTPPort = viper.GetInt(flagForHTTPPort)
 
 	c.EmailEnabled = viper.GetBool(flagEmailEnabled)
