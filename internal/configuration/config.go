@@ -45,6 +45,7 @@ type Config struct {
 	TwilioAuthToken   string
 	TwilioPhoneNumber string
 
+	// KafkaConfig provides configuration for connecting to Apache Kafka.
 	KafkaConfig configuration.KafkaConfig
 }
 
@@ -67,7 +68,7 @@ func LoadConfig() Config {
 	c.KafkaConfig = configuration.LoadKafkaConfig()
 
 	flag.Int(flagForGrpcPort, c.GrpcPort, "gRPC port")
-	flag.Int(flagForHTTPPort, c.HTTPPort, "gRPC HTTP port")
+	flag.Int(flagForHTTPPort, c.HTTPPort, "HTTP port")
 
 	flag.Bool(flagEmailEnabled, c.EmailEnabled, "whether email sending is enabled")
 	flag.Bool(flagSMSEnabled, c.SMSEnabled, "whether sms sending is enabled")
