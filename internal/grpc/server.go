@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 
+	health "google.golang.org/grpc/health/grpc_health_v1"
+
 	"github.com/AlpacaLabs/api-hermes/internal/configuration"
 	"github.com/AlpacaLabs/api-hermes/internal/service"
 	hermesV1 "github.com/AlpacaLabs/protorepo-hermes-go/alpacalabs/hermes/v1"
@@ -37,6 +39,7 @@ func (s Server) Run() {
 	log.Println("Starting gRPC server...")
 	grpcServer := grpc.NewServer()
 
+	health.RegisterHealthServer(grpcServer, s)
 	hermesV1.RegisterSendEmailServiceServer(grpcServer, s)
 	hermesV1.RegisterSendSmsServiceServer(grpcServer, s)
 
