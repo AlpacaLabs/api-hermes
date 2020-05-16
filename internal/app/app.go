@@ -29,17 +29,17 @@ func (a App) Run() {
 
 	wg.Add(1)
 	httpServer := http.NewServer(a.config, svc)
-	httpServer.Run()
+	go httpServer.Run()
 
 	wg.Add(1)
 	grpcServer := grpc.NewServer(a.config, svc)
-	grpcServer.Run()
+	go grpcServer.Run()
 
 	wg.Add(1)
-	async.HandleSendEmailRequests(a.config, svc)
+	go async.HandleSendEmailRequests(a.config, svc)
 
 	wg.Add(1)
-	async.HandleSendSmsRequests(a.config, svc)
+	go async.HandleSendSmsRequests(a.config, svc)
 
 	wg.Wait()
 }
