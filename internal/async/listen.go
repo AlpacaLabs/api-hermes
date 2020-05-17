@@ -2,7 +2,8 @@ package async
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/AlpacaLabs/api-hermes/pkg/topic"
 
 	"github.com/AlpacaLabs/api-hermes/internal/service"
 
@@ -13,43 +14,11 @@ import (
 )
 
 func HandleSendEmailRequests(config configuration.Config, s service.Service) {
-	ctx := context.TODO()
-
-	groupID := config.AppName
-	topic := "send-email-request"
-	brokers := []string{
-		fmt.Sprintf("%s:%d", config.KafkaConfig.Host, config.KafkaConfig.Port),
-	}
-
-	err := goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
-		Brokers:     brokers,
-		GroupID:     groupID,
-		Topic:       topic,
-		ProcessFunc: handleSendEmailRequest(s),
-	})
-	if err != nil {
-		log.Errorf("%v", err)
-	}
+	readFromTopic(topic.TopicForSendEmailRequest, config, handleSendEmailRequest(s))
 }
 
 func HandleSendSmsRequests(config configuration.Config, s service.Service) {
-	ctx := context.TODO()
-
-	groupID := config.AppName
-	topic := "send-sms-request"
-	brokers := []string{
-		fmt.Sprintf("%s:%d", config.KafkaConfig.Host, config.KafkaConfig.Port),
-	}
-
-	err := goKafka.ProcessKafkaMessages(ctx, goKafka.ProcessKafkaMessagesInput{
-		Brokers:     brokers,
-		GroupID:     groupID,
-		Topic:       topic,
-		ProcessFunc: handleSendSmsRequest(s),
-	})
-	if err != nil {
-		log.Errorf("%v", err)
-	}
+	readFromTopic(topic.TopicForSendSmsRequest, config, handleSendSmsRequest(s))
 }
 
 func handleSendEmailRequest(s service.Service) func(context.Context, goKafka.Message) {
